@@ -8,8 +8,9 @@ public class PlayerMovement : MonoBehaviour
     private float lowerBound = -4.5f;
     private float upperBound = 7.0f;
     public HealthManager healthscript;
-    
+    private bool inCouroutine = false;
     public int currentHealth = 100;
+    private static int counter = 1;
     
     // Start is called before the first frame update
     void Start()
@@ -32,11 +33,18 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(currentHealth!=0)
-            TakeDamage(25);
-        StartCoroutine(slowmoeffect());
-
+        if (counter == 1)
+        {
+            counter++;
+            if (currentHealth != 0)
+                TakeDamage(25);
+        }
+        if (!inCouroutine)
+            StartCoroutine(slowmoeffect());
+        counter = 1;
     }
+   
+    
     void TakeDamage(int damage)
     {
         currentHealth -= damage;
@@ -49,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
     
     IEnumerator slowmoeffect()
     {
-        
+        inCouroutine = true;
         float originaltimeScale = Time.timeScale;
         Time.timeScale = 0.1f;
         Time.fixedDeltaTime = Time.fixedDeltaTime / 10f;
@@ -57,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
 
         Time.timeScale = originaltimeScale;
         Time.fixedDeltaTime = Time.fixedDeltaTime * 10f;
-
+        inCouroutine = false;
 
     }
     

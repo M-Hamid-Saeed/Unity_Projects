@@ -8,6 +8,7 @@ public class spawnManager : MonoBehaviour
     public GameObject coinPrefab;
     private float lastSpawnX = -6.5f;
     private float slabSpawnDistance = 2.5f;
+    private float spawnYpos = 7f;
     private float lastSpawnedTime;
     private float spawnInterval = 2f;
     public PlayerMovement health;
@@ -27,7 +28,7 @@ public class spawnManager : MonoBehaviour
     }
     void spawnSlabs()
     {
-        bool spawnCoin = Random.value < 0.5;
+        bool spawnCoin = Random.value < 0.3;
         int index = Random.Range(0, 5);
         for (int i = 0; i < 5; i++)
         {
@@ -35,20 +36,20 @@ public class spawnManager : MonoBehaviour
             {
                 lastSpawnX += slabSpawnDistance;
                 if(spawnCoin)
-                    Instantiate(coinPrefab, new Vector2(lastSpawnX,6.3f), Quaternion.identity);
+                    Instantiate(coinPrefab, new Vector2(lastSpawnX,spawnYpos), Quaternion.identity);
                 continue;
             } 
             
                 Instantiate(slabPrefab, spawnPositionReturn(), Quaternion.identity);
         }
-        lastSpawnX = -6.5f;
+        lastSpawnX = -spawnYpos;
         lastSpawnedTime = Time.time;
 
     }
     Vector2 spawnPositionReturn()
     {
         lastSpawnX += slabSpawnDistance;
-        return new Vector2(lastSpawnX, 6.3f);
+        return new Vector2(lastSpawnX, spawnYpos);
 
     }
 }

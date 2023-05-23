@@ -15,7 +15,8 @@ public class HealthManager : MonoBehaviour
     public void setHealth(int health)
     {
         slider.value = health;
-        healthScore.text = health.ToString();
+        if(health >=100)
+           healthScore.text = health.ToString();
 
     }
     public void setMaxHealth(int health)

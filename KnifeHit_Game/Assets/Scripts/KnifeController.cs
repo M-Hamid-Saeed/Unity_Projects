@@ -11,7 +11,8 @@ public class KnifeController : MonoBehaviour
     public UITextScore ui;
     private static int knivescount = 0;
     private static int score;
-    public gameOverscript gameOver;
+    public gameOverManager gameOver;
+    
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -24,8 +25,14 @@ public class KnifeController : MonoBehaviour
     }
     private void Start()
     {
-        gameOver = GameObject.FindGameObjectWithTag("gameOver").GetComponent<gameOverscript>();
+        // gameOver = GameObject.Find("EndGameCanvas");
+
+        gameOver = GameObject.Find("GameOverMan").GetComponent<gameOverManager>();
         Debug.Log(gameOver);
+
+
+
+
     }
 
     // Update is called once per frame
@@ -68,7 +75,11 @@ public class KnifeController : MonoBehaviour
 
         else if (collision.gameObject.CompareTag("stuckedKnife"))
         {
-            gameOver.gameObject.SetActive(true);
+            Debug.Log("IN COllision with Stucked Knife");
+            Debug.Log(gameOver.gameObject);
+            gameOver.setactive();
+
+
 
         }
 

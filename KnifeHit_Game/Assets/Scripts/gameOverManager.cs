@@ -2,12 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-public class gameOverscript : MonoBehaviour
+public class gameOverManager : MonoBehaviour
 {
+    public GameObject gameoverman;
     // Start is called before the first frame update
    public void RestartButton()
     {
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Main Scene");
+    }
+
+    public void setactive()
+    {
+        
+        gameoverman.SetActive(true);
 
     }
 }

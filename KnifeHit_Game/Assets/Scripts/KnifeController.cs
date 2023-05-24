@@ -6,47 +6,45 @@ public class KnifeController : MonoBehaviour
 {
     private Rigidbody2D rb;
     private knifeSpawn knifespawn;
-    public float throw_speed = 1200;
+    public float throw_speed = 100;
     private bool isthrowing = false;
     public UITextScore ui;
     private static int knivescount = 0;
     private static int score;
-    private GameObject gameOver;
+    public gameOverscript gameOver;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         knifespawn = FindObjectOfType<knifeSpawn>();
         ui = FindObjectOfType<UITextScore>();
         score = knifespawn.totalKnives;
-        gameOver = GameObject.FindGameObjectWithTag("gameOver");
+        
+
+        
     }
-
-    void Start()
+    private void Start()
     {
-       
-
-        // knifeIndex = knifespawn.totalKnives - 1;
+        gameOver = GameObject.FindGameObjectWithTag("gameOver").GetComponent<gameOverscript>();
+        Debug.Log(gameOver);
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-       
+        if (score == 0)
+            ui.winnerUI();
 
         if (Input.GetMouseButtonDown(0))
         {
                 throwKnife();            
-                StartCoroutine(spawnWait());
-       
-            
+                StartCoroutine(spawnWait());          
         }
-        if (score == 0)
-            ui.winnerUI();
     }
     IEnumerator spawnWait()
     {
-        while (rb.velocity.magnitude > 0.3f)
+        while (rb.velocity.magnitude > 0f)
             yield return null;// Wait until the current knife has stopped moving
+        yield return new WaitForSeconds(0.4f);
         knifespawn.knifesetActive(); // set the next knife true         
 
     }
@@ -58,20 +56,22 @@ public class KnifeController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Log"))
         {
-            GetComponent<ParticleSystem>().Play();
+            
             rb.velocity = new Vector2(0, 0);
-            rb.bodyType = RigidbodyType2D.Kinematic;
-            this.transform.SetParent(collision.gameObject.transform);
+           
+            this.transform.SetParent(collision.transform);
+            gameObject.tag = "stuckedKnife";
             knivescount++;
             score--;
 
         }
-        if (collision.gameObject.CompareTag("Player"))
+
+        else if (collision.gameObject.CompareTag("stuckedKnife"))
         {
-            gameOver.SetActive(true);
+            gameOver.gameObject.SetActive(true);
 
         }
-        
+
         callui();
         StartCoroutine(deactivate__Script());
         
@@ -80,7 +80,7 @@ public class KnifeController : MonoBehaviour
 
     IEnumerator deactivate__Script()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.2f);
         this.enabled = false;
     }
 

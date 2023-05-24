@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Log
   - gameOver
+  - knife
+  - stuckedKnife
   layers:
   - Default
   - TransparentFX

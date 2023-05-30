@@ -149,3 +149,4 @@ MonoBehaviour:
   throw_speed: 1500
   ui: {fileID: 0}
   gameOver: {fileID: 0}
+  NewgameObject: {fileID: 4466074271444497523, guid: 89821ab8b63d2af45b91e585e2698736, type: 3}

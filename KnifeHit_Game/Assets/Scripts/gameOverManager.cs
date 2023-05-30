@@ -9,6 +9,7 @@ public class gameOverManager : MonoBehaviour
    public void RestartButton()
     {
         SceneManager.LoadScene("Main Scene");
+        Time.timeScale = 1f;
     }
 
     public void setactive()

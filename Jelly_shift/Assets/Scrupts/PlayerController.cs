@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip blipSound;
     private AudioSource playerAudioSource;
     public ParticleSystem collisionParticle;
+    private float scalingFactor = 1f;
     
     
     // Start is called before the first frame update
@@ -33,18 +34,25 @@ public class PlayerController : MonoBehaviour
     {
 
         scaleCube();
-        movingCube();
+        //movingCube();
 
     }
-   
+    private void FixedUpdate()
+    {
+        movingCube();
+    }
+
 
     private void scaleCube() {
         
         float verticalInput = Input.GetAxis("Vertical");
-
+        if (verticalInput > 0)
+            verticalInput = 1;
+        else if (verticalInput < 0)
+            verticalInput = -1;
        
-        float newScaleX = transform.localScale.x - verticalInput * scaleSpeed * Time.deltaTime;
-        float newScaleY = transform.localScale.y + verticalInput * scaleSpeed * Time.deltaTime;
+        float newScaleX = transform.localScale.x -  verticalInput * scaleSpeed * Time.deltaTime;
+        float newScaleY = transform.localScale.y +  verticalInput * scaleSpeed * Time.deltaTime;
 
         // Clamp the scale within the specified range
         newScaleX = Mathf.Clamp(newScaleX, minX, maxX);
@@ -52,13 +60,13 @@ public class PlayerController : MonoBehaviour
        
 
         transform.localScale = new Vector3(newScaleX, newScaleY, transform.localScale.z);
+      
 
-        
     }
     private void movingCube()
     {
-        //transform.Translate(Vector3.forward * ForwardSpeed* Time.deltaTime);
-        cubeRB.velocity = transform.forward * ForwardSpeed;
+       transform.Translate(Vector3.forward * ForwardSpeed* Time.deltaTime);
+       //cubeRB.velocity = transform.forward * ForwardSpeed;
 
     }
     private void OnCollisionEnter(Collision collision)

@@ -505,7 +505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slabPrefab: {fileID: 5052166049733860946, guid: aefa03ea9d32ad64183ea7a230f750d5, type: 3}
-  coinPrefab: {fileID: 120607823047356603, guid: dc4811fb4d026fe41bf2f8cf7d721c17, type: 3}
+  coinPrefab: {fileID: 2085158952361078298, guid: dc4811fb4d026fe41bf2f8cf7d721c17, type: 3}
   health: {fileID: 1192824065}
 --- !u!4 &857511393
 Transform:

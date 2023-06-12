@@ -34,7 +34,7 @@ public class CharacterController2D : MonoBehaviour {
         else if (moveInput < 0) {
             transform.localScale = new Vector3(-0.33f, 0.33f, 1f);
         }
-        if (isGrounded && Input.GetKeyDown(KeyCode.Space)) {
+        if (isGrounded && Input.GetKey(KeyCode.Space)) {
             // Apply vertical force to make the player jump
 
             rb.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);

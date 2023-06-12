@@ -6,12 +6,12 @@ public class CharacterController2D : MonoBehaviour {
     public float speed;
     private Animator characterAnim;
     [SerializeField] private bool isGrounded = true;
-    [SerializeField]private bool isJumping;
     [SerializeField] private bool isSliding;
-    [SerializeField] private float jumpSpeed;
     [SerializeField] private bool hadJumped = false;
-    private Vector2 slideStartPostion;
+    [SerializeField] private float jumpSpeed;
+    [SerializeField] private float slideDistance;
     private Rigidbody2D rb;
+    private float moveInput;
 
     // Start is called before the first frame update
     void Start() {
@@ -21,38 +21,49 @@ public class CharacterController2D : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        float moveInput = Input.GetAxis("Horizontal");
-        Debug.Log(moveInput);
-
-        // Move the player horizontally
+        moveInput = Input.GetAxis("Horizontal");
+    }
+    private void FixedUpdate() {
         rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
 
-        characterAnim.SetBool("IsRunning", Mathf.Abs(moveInput) > 0);
-        Vector2 Xvalue = transform.localScale;
+        characterAnim.SetBool("IsRunning", Mathf.Abs(moveInput) > 0.02 && isGrounded);
+
         if (moveInput > 0) {
-
-            Xvalue.x *= 1;
+            transform.localScale = new Vector3(0.33f, 0.33f, 1f);
         }
-        if(moveInput < -0.006)
-            Xvalue.x *= -1;
-
-        if (isGrounded && Input.GetKey(KeyCode.Space)) {
+        else if (moveInput < 0) {
+            transform.localScale = new Vector3(-0.33f, 0.33f, 1f);
+        }
+        if (isGrounded && Input.GetKeyDown(KeyCode.Space)) {
             // Apply vertical force to make the player jump
-            isGrounded = false;
-            rb.AddForce(new Vector2(0f, jumpSpeed), ForceMode2D.Impulse);
+
+            rb.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
             characterAnim.SetBool("IsJump", true);
+            isGrounded = false;
+            hadJumped = true;
         }
-      
+        if (hadJumped && isGrounded) {
+            Debug.Log("Sliding");
+            characterAnim.SetBool("IsSlide", true);
+            for (int i = 0; i < 10; i++) {
+                rb.velocity = new Vector2(transform.right.x * slideDistance, rb.velocity.y);
+            }
+
+            hadJumped = false;
+        }
+        else
+            characterAnim.SetBool("IsSlide", false);
     }
 
-   
-   
+
+
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.CompareTag("TileMap")) {
-           
-            isGrounded = true;
             characterAnim.SetBool("IsJump", false);
+            isGrounded = true;
+           
         }
+        Debug.Log(collision.gameObject.tag);
         Debug.Log(isGrounded);
     }
 }
